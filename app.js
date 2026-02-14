@@ -18,6 +18,20 @@ async function dbConnect() {
 }
 
 dbConnect();
+// requie Models
+const User = require("./Models/User");
+
+app.post("/register", async (req, res) => {
+  try {
+    //get  data
+    const{username,email,password,role}=req.body
+  } catch (error) {
+    // validation
+    if (!username || !email || !password || !role) return req.status(400).json({msg: "Invalid Data!!"});
+    // Create New User
+    // Response
+  }
+})
 
 
 
