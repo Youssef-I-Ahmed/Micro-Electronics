@@ -46,6 +46,23 @@ app.post("/register", async (req, res) => {
 });
 
 
+app.post("/login", async (req, res) => {
+  try {
+    const{email,password}=req.body
+        // validation
+    if (!email || !password) return res.status(400).json({msg: "Invalid Data!!"});
+
+    const user = await User.findOne({email});
+    if (!user) return res.status(404).json({msg: "Account Not Exist"})
+      // Match Password
+    const matchPass = await bcrypt.compare(password,user.password);
+    if(!matchPass) return res.status(400).json({msg: "Invalid Password"})
+    res.status(200).json({msg:"Success Login"})
+  } catch (error) {
+    console.log(error); 
+  }
+})
+
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
