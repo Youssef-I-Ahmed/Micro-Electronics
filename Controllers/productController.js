@@ -24,7 +24,6 @@ const createProduct = async (req, res) => {
 
     let decoded;
 
-    return log
     
     // Create new product
     const product = await Product.create({ name, stock, price });

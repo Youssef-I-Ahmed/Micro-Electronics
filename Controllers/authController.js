@@ -20,7 +20,7 @@ const createUser = async (req, res) => {
     const { username, email, password, role } = req.body;
     // validation
     if (!username || !email || !password)
-      return req.status(400).json({ msg: "Invalid Data!!" });
+      return res.status(400).json({ msg: "Invalid Data!!" });
 
     const existUser = await User.findOne({ email });
     if (existUser)

@@ -121,11 +121,11 @@ const updateCartItem = async (req, res) => {
     if (!cart) {
       return res.status(404).json({ msg: "Cart item not found!!" });
     }
+    const item = cart.items.id(itemId);
     if (!item) {
       return res.status(404).json({ msg: "Item not found in cart" });
     }
-    const item = cart.items.id(itemId);
-    
+
     const product = await Product.findById(item.productId);
     if (!product) {
       return res.status(404).json({ msg: "Product not found!!" });
@@ -163,10 +163,10 @@ const removeItemCart = async (req, res) => {
       return res.status(404).json({ msg: "Cart item not found!!" });
     }
 
+    const item = cart.items.id(itemId);
     if (!item) {
       return res.status(404).json({ msg: "Item not found in cart" });
     }
-    const item = cart.items.id(itemId);
 
     const product = await Product.findById(item.productId);
     if (!product) {
