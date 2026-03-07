@@ -10,12 +10,23 @@ const createProduct = async (req, res) => {
         .status(400)
         .json({ message: "Error: Missed Data. All fields are required" });
     }
-    const test = await User.findById(roleid);
-    if (!test || test.role !== "admin") {
-      return res
-        .status(400)
-        .json({ message: "Error: Only admin can create products" });
-    }
+
+    // const test = await User.findById(roleid);
+    // if (!test || test.role !== "admin") {
+    //   return res
+    //     .status(400)
+    //     .json({ message: "Error: Only admin can create products" });
+    // }
+
+    //
+    const authHeader = req.headers.authorization;
+    const token = authHeader.split(" ")[1];
+
+    let decoded;
+
+    return log
+    
+    // Create new product
     const product = await Product.create({ name, stock, price });
     console.log("Received product data:", product);
 
