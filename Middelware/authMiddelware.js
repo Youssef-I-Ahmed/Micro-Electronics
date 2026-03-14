@@ -21,3 +21,6 @@ const authMiddelware = async (req, res, next) => {  // Middleware to check if th
 
 module.exports = authMiddelware;
 
+
+
+

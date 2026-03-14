@@ -1,7 +1,7 @@
 const User = require("../Models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const registerSchema = require("./validation/registerSchema");
+const registerSchema = require("./Validation/authValidation");
 
 // app.post("/register", async (req, res) => {
 const createUser = async (req, res) => {
@@ -12,15 +12,19 @@ const createUser = async (req, res) => {
     });
     //abortEarly: false to return all validation errors instead of stopping at the first one
     //stripUnknown: true to remove any fields that are not defined in the schema from the validated value
-    // لسه عايز اشوف همسح ايه من الجزء اللي تحت  بعد ما استخدمت ال joi validation
 
-
+    if (error) {
+      return res.status(400).json({
+        msg: error.details.map((err) => err.message) // Map through the error details and extract the error messages to send in the response
+      });
+    }
     
     //get  data
-    const { username, email, password, role } = req.body;
+    //const { username, email, password, role } = req.body;
+    const { username, email, password, role } = value; // Use the validated and sanitized value from Joi
     // validation
-    if (!username || !email || !password)
-      return res.status(400).json({ msg: "Invalid Data!!" });
+    // if (!username || !email || !password)
+    //   return res.status(400).json({ msg: "Invalid Data!!" }); // removed this validation as we are using Joi for validation
 
     const existUser = await User.findOne({ email });
     if (existUser)
@@ -43,10 +47,21 @@ const createUser = async (req, res) => {
 // app.post("/login", async (req, res) => {
 const loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    
+    const { error, value } = loginSchema.validate(req.body, {
+      abortEarly: false,
+      stripUnknown: true,
+    });
+    if (error) {
+      return res.status(400).json({
+        msg: error.details.map((err) => err.message) 
+      });
+    }
+    //const { email, password } = req.body;
+    const { email, password } = value;
     // validation
-    if (!email || !password)
-      return res.status(400).json({ msg: "Invalid Data!!" });
+    // if (!email || !password)
+    //   return res.status(400).json({ msg: "Invalid Data!!" });
 
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ msg: "Account Not Exist" });
