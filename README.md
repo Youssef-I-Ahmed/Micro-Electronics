@@ -10,7 +10,7 @@
 ![bcrypt](https://img.shields.io/badge/Bcrypt-12100E?style=for-the-badge&logo=security&logoColor=white)
 ![Joi](https://img.shields.io/badge/Joi-0080FF?style=for-the-badge&logo=joi&logoColor=white)
 ![dotenv](https://img.shields.io/badge/Dotenv-ECD53F?style=for-the-badge&logo=dotenv&logoColor=black)
-
+![Multer](https://img.shields.io/badge/Multer-FF6600?style=for-the-badge&logo=files&logoColor=white)
 ------------------------------------------------------------------------
 
 ## 📌 Project Overview
