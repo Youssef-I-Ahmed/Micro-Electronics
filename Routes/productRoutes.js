@@ -5,7 +5,9 @@ const router = express.Router();
 
 const {createProduct, getProducts, getProductByName} = require("../Controllers/productController");
 
-router.post("/createProduct", createProduct);
+const uploadProductImages = require("../Middelware/uploadImages");
+
+router.post("/createProduct", uploadProductImages, createProduct);
 router.get("/products", getProducts);
 router.get("/products/:name", getProductByName);
 

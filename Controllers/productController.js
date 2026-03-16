@@ -1,15 +1,24 @@
 const Product = require("../Models/Product");
 const User = require("../Models/User");
-
+const CreateProductSchema = require("./Validation/productValidation");
 // app.post("/products", async (req, res) => {
 const createProduct = async (req, res) => {
   try {
-    const { name, stock, price, roleid } = req.body;
-    if (!name || stock == null || price == null || !roleid) {
-      return res
-        .status(400)
-        .json({ message: "Error: Missed Data. All fields are required" });
+    if (!req.file) {
+      return res.status(404).json({ message: "Error: No image uploaded" });
     }
+
+    const { error, value } = CreateProductSchema.validate(req.body, {
+      abortEarly: false,
+      stripUnknown: true,
+    });
+    if (error) {
+      return res.status(400).json({
+        message: error.details.map((err) => err.message),
+      });
+    }
+    const { name, stock, price, roleid } = value;
+    value.image = req.file.path; // Add the image path to the validated value
 
     // const test = await User.findById(roleid);
     // if (!test || test.role !== "admin") {
@@ -24,9 +33,13 @@ const createProduct = async (req, res) => {
 
     let decoded;
 
-    
     // Create new product
-    const product = await Product.create({ name, stock, price });
+    const product = await Product.create({
+      name,
+      stock,
+      price,
+      image: value.image,
+    });
     console.log("Received product data:", product);
 
     res.status(201).json({
@@ -59,14 +72,12 @@ const getProductByName = async (req, res) => {
     if (products.length === 0) {
       return res.status(404).json({ msg: "Product not found" });
     }
-    res
-      .status(200)
-      .json({
-        msg: "Product fetched  successfully",
-        success: true,
-        count: products.length,
-        data: products,
-      });
+    res.status(200).json({
+      msg: "Product fetched  successfully",
+      success: true,
+      count: products.length,
+      data: products,
+    });
   } catch (error) {
     console.log(error);
   }

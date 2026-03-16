@@ -1,6 +1,6 @@
 const joi = require("joi");
 
-const addProductSchema = joi.object({
+const CreateProductSchema = joi.object({
     name: joi.string().min(3).max(50).required(),
     description: joi.string().min(10).max(500).required(),
     price: joi.number().positive().required(),
@@ -8,4 +8,4 @@ const addProductSchema = joi.object({
     stock: joi.number().integer().min(0).required(),
 });
 
-module.exports = addProductSchema;
+module.exports = CreateProductSchema;
